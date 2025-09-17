@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be Mine, <span id="name-placeholder">My Love</span>?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-pink-50 min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+    <div id="main-content" class="text-center max-w-md w-full">
+        <div class="floating mb-8">
+            <i data-feather="heart" class="w-16 h-16 text-pink-500 mx-auto heartbeat"></i>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-pink-700 mb-6" data-aos="fade-down">Will You Be Mine, <span id="name-display" class="text-pink-800">My Love</span>?</h1>
+        <div class="mb-4">
+            <input type="text" id="name-input" placeholder="Enter your name" class="px-4 py-2 rounded-full border border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500">
+            <button id="update-name" class="ml-2 px-3 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600">Update</button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8" data-aos="zoom-in">
+            <p class="text-gray-700 mb-6">I've been wanting to ask you something important...</p>
+            <p class="text-lg font-medium text-pink-600">Would you go out with me?</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up">
+            <button id="yes-btn" class="px-8 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-lg">
+                Yes! <i data-feather="smile" class="inline ml-1"></i>
+            </button>
+            <button id="no-btn" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-full transition-all shadow">
+                No <i data-feather="frown" class="inline ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="success-content" class="hidden text-center max-w-md w-full">
+        <div class="floating mb-8">
+            <i data-feather="heart" class="w-20 h-20 text-red-500 mx-auto heartbeat"></i>
+        </div>
+
+        <h1 class="text-4xl font-bold text-pink-700 mb-6" data-aos="fade-down">Yay!  ❤️</h1>
+
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8" data-aos="zoom-in">
+            <p class="text-xl text-pink-600 mb-4">You've made me the happiest person!</p>
+            <p class="text-gray-700">I promise to make every moment special with you, <span id="success-name" class="font-medium text-pink-600">My Love</span>.</p>
+            <div class="mt-6 p-4 bg-pink-50 rounded-lg">
+                <h3 class="font-bold text-pink-700 mb-2">Our First Date Countdown</h3>
+                <div id="countdown" class="text-2xl font-mono text-pink-800">
+                    <span id="days"></span>d <span id="hours"></span>h <span id="minutes"></span>m <span id="seconds"></span>s
+                </div>
+            </div>
+            <div class="mt-6">
+                <h3 class="font-bold text-pink-700 mb-2">Where should we meet?</h3>
+                <div id="map" class="h-48 w-full rounded-lg border border-pink-200"></div>
+                <div class="mt-2 text-sm text-gray-600">Click on the map to select a location</div>
+            </div>
+            <div class="mt-6">
+                <h3 class="font-bold text-pink-700 mb-2">Our Memories</h3>
+                <div class="grid grid-cols-3 gap-2">
+                    <img src="http://static.photos/love/320x240/1" class="rounded-lg object-cover h-24 w-full" alt="Memory 1">
+                    <img src="http://static.photos/love/320x240/2" class="rounded-lg object-cover h-24 w-full" alt="Memory 2">
+                    <img src="http://static.photos/love/320x240/3" class="rounded-lg object-cover h-24 w-full" alt="Memory 3">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-center space-x-4">
+                <button id="share-twitter" class="px-4 py-2 bg-blue-400 text-white rounded-full hover:bg-blue-500">
+                    <i data-feather="twitter" class="inline mr-1"></i> Share
+                </button>
+                <button id="share-instagram" class="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-700">
+                    <i data-feather="instagram" class="inline mr-1"></i> Share
+                </button>
+            </div>
+            <audio id="romantic-music" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            </audio>
+            <button id="music-toggle" class="mt-4 px-3 py-1 text-sm bg-pink-100 rounded-full">
+                <i data-feather="music"></i> <span>Play Music</span>
+            </button>
+        </div>
+
+        <div class="flex justify-center">
+            <button id="restart-btn" class="px-6 py-2 bg-pink-100 hover:bg-pink-200 text-pink-700 font-medium rounded-full transition-all shadow">
+                <i data-feather="refresh-cw" class="inline mr-1"></i> Try Again
+            </button>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Name personalization
+            const nameInput = document.getElementById('name-input');
+            const nameDisplay = document.getElementById('name-display');
+            const namePlaceholder = document.getElementById('name-placeholder');
+            const successName = document.getElementById('success-name');
+            const updateNameBtn = document.getElementById('update-name');
+
+            updateNameBtn.addEventListener('click', function() {
+                const name = nameInput.value.trim() || 'My Love';
+                nameDisplay.textContent = name;
+                namePlaceholder.textContent = name;
+                successName.textContent = name;
+                nameInput.value = '';
+            });
+
+            // Countdown timer
+            function updateCountdown() {
+                const now = new Date();
+                const firstDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7, 19, 0, 0);
+                const diff = firstDate - now;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+
+            // Music player
+            const music = document.getElementById('romantic-music');
+            const musicToggle = document.getElementById('music-toggle');
+            let isPlaying = false;
+
+            musicToggle.addEventListener('click', function() {
+                if (isPlaying) {
+                    music.pause();
+                    musicToggle.innerHTML = '<i data-feather="music"></i> <span>Play Music</span>';
+                } else {
+                    music.play();
+                    musicToggle.innerHTML = '<i data-feather="pause"></i> <span>Pause Music</span>';
+                }
+                isPlaying = !isPlaying;
+                feather.replace();
+            });
+
+            // Map initialization
+            function initMap() {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: -34.397, lng: 150.644},
+                    zoom: 8
+                });
+
+                let marker = new google.maps.Marker({
+                    position: {lat: -34.397, lng: 150.644},
+                    map: map,
+                    draggable: true
+                });
+
+                map.addListener('click', function(e) {
+                    marker.setPosition(e.latLng);
+                });
+            }
+
+            // Social sharing
+            document.getElementById('share-twitter').addEventListener('click', function() {
+                const text = `I just said YES to ${successName.textContent}! ❤️`;
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+            });
+
+            document.getElementById('share-instagram').addEventListener('click', function() {
+                alert('Take a screenshot and share it on Instagram!');
+            });
+            AOS.init();
+            feather.replace();
+
+            const noBtn = document.getElementById('no-btn');
+            const yesBtn = document.getElementById('yes-btn');
+            const mainContent = document.getElementById('main-content');
+            const successContent = document.getElementById('success-content');
+            const restartBtn = document.getElementById('restart-btn');
+
+            // Initialize map if API is loaded
+            if (typeof google !== 'undefined') {
+                initMap();
+            }
+
+            noBtn.addEventListener('mouseover', function() {
+                if (isPlaying) {
+                    music.pause();
+                    musicToggle.innerHTML = '<i data-feather="music"></i> <span>Play Music</span>';
+                    isPlaying = false;
+                    feather.replace();
+                }
+                const x = Math.random() * (window.innerWidth - this.offsetWidth) - 60;
+                const y = Math.random() * (window.innerHeight - this.offsetHeight) - 60;
+
+                this.style.position = 'absolute';
+                this.style.left = `${x}px`;
+                this.style.top = `${y}px`;
+                this.style.transition = 'all 0.3s ease-out';
+
+                // Change text when escaping
+                const messages = [
+                    "Are you sure?",
+                    "Think again!",
+                    "Please?",
+                    "I'll be sad!",
+                    "Don't do this!",
+                    "You can't catch me!",
+                    "Try harder!",
+                    "Not so fast!"
+                ];
+                this.innerHTML = `${messages[Math.floor(Math.random() * messages.length)]} <i data-feather="frown" class="inline ml-1"></i>`;
+                feather.replace();
+            });
+
+            yesBtn.addEventListener('click', function() {
+                mainContent.classList.add('hidden');
+                successContent.classList.remove('hidden');
+                createConfetti();
+            });
+
+            restartBtn.addEventListener('click', function() {
+                successContent.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                // Reset no button position
+                noBtn.style.position = '';
+                noBtn.style.left = '';
+                noBtn.style.top = '';
+                noBtn.innerHTML = 'No <i data-feather="frown" class="inline ml-1"></i>';
+                feather.replace();
+            });
+
+            function createConfetti() {
+                const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = -10 + 'px';
+                    confetti.style.opacity = '1';
+                    confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                    document.body.appendChild(confetti);
+
+                    const animationDuration = Math.random() * 3 + 2;
+
+                    confetti.animate([
+                        { top: -10 + 'px', opacity: 1 },
+                        { top: window.innerHeight + 'px', opacity: 0 }
+                    ], {
+                        duration: animationDuration * 1000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                        delay: Math.random() * 2000
+                    });
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, animationDuration * 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
